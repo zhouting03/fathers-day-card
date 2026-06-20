@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老爸，父亲节快乐！</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 85%;
+            width: 320px;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        /* 支付墙默认显示，主内容默认隐藏 */
+        #main-content {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 左上角的 To 周总 */
+        .greeting-to {
+            font-size: 15px;
+            text-align: left;
+            color: #e0e0e0;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #ffd700;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        h2 {
+            font-size: 22px;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        .pay-desc {
+            font-size: 14px;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background-color: #fff; /* 占位背景色 */
+            border-radius: 10px;
+            margin: 0 auto 20px;
+            display: block;
+            border: 3px solid #ffd700;
+        }
+
+        #message-board {
+            font-size: 18px;
+            line-height: 1.8;
+            min-height: 120px;
+            margin: 25px 0;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .signature {
+            margin-top: 30px;
+            font-size: 15px;
+            text-align: right;
+            color: #e0e0e0;
+            font-style: italic;
+        }
+        .btn {
+            background: #ffd700;
+            color: #1e3c72;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card" id="lock-screen">
+    <h2>💰 解锁专属祝福</h2>
+    <div class="pay-desc">周总，请先扫码支付“查看费”，<br>再开启您的父亲节惊喜！</div>
+    
+    <img src="/Users/zhouting/Downloads/微信图片_20260620234034_53_427.jpg" alt="微信收款码" class="qr-code">
+    
+    <button class="btn" onclick="unlockCard()">我已支付，立即查看</button>
+</div>
+
+<div class="card" id="main-content">
+    <div class="greeting-to">To 周总：</div>
+    <h1>👨‍👧‍👦 父亲节快乐~</h1>
+    <div id="message-board">加载中...</div>
+    <button class="btn" onclick="nextMessage()">点击获取下一条祝福</button>
+    <div class="signature">From 周婷</div>
+</div>
+
+<script>
+    // 祝福语列表
+    const blessings = [
+        "老爸，父亲节快乐！感谢您一直以来的包容和支持。",
+        "您是我人生中最坚强的后盾，感谢您一直以来的辛苦付出！",
+        "虽然平时不常表达，但您永远是我心目中的最好的爸爸！",
+        "感谢您让我时常体会到“浓浓的父爱“，满足我能力范围内的所有需求",
+        "感谢您对这个家的包容和付出",
+        "祝您身体健康，每天都开开心心，少抽烟少喝酒哦！",
+    ];
+
+    let currentIndex = 0;
+    const messageEl = document.getElementById("message-board");
+
+    // 切换下一条祝福逻辑
+    function nextMessage() {
+        messageEl.style.opacity = 0;
+        messageEl.style.transform = "scale(0.95)";
+        
+        setTimeout(() => {
+            messageEl.innerText = blessings[currentIndex];
+            messageEl.style.opacity = 1;
+            messageEl.style.transform = "scale(1)";
+            messageEl.style.transition = "all 0.5s ease";
+            
+            currentIndex = (currentIndex + 1) % blessings.length;
+        }, 300);
+    }
+
+    // 解锁卡片逻辑
+    function unlockCard() {
+        // 隐藏支付墙
+        document.getElementById('lock-screen').style.display = 'none';
+        // 显示主卡片
+        document.getElementById('main-content').style.display = 'block';
+        // 触发第一条祝福加载
+        nextMessage();
+    }
+</script>
+
+</body>
+</html>
