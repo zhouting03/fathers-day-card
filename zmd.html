@@ -18,61 +18,61 @@
             overflow: hidden;
         }
         .card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 20px;
-            padding: 40px 30px;
+            padding: 28px;
             text-align: center;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.2);
-            max-width: 85%;
-            width: 320px;
-            animation: fadeIn 1.5s ease-out;
+            border: 1px solid rgba(255,255,255,0.12);
+            max-width: 90%;
+            width: 360px;
+            animation: fadeIn 1s ease-out;
         }
-        
-        /* 支付墙默认显示，主内容默认隐藏 */
-        #main-content {
+
+        /* 初始只显示封面，支付页和主内容隐藏 */
+        #lock-screen, #main-content {
             display: none;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        /* 左上角的 To 周总 */
+
         .greeting-to {
             font-size: 15px;
             text-align: left;
             color: #e0e0e0;
             font-style: italic;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         h1 {
             font-size: 26px;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             color: #ffd700;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.25);
         }
         h2 {
-            font-size: 22px;
+            font-size: 20px;
             color: #ffd700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .pay-desc {
             font-size: 14px;
             color: #e0e0e0;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         .qr-code {
             width: 200px;
             height: 200px;
-            background-color: #fff; /* 占位背景色 */
+            object-fit: cover;
+            background-color: #fff;
             border-radius: 10px;
-            margin: 0 auto 20px;
+            margin: 0 auto 16px;
             display: block;
             border: 3px solid #ffd700;
         }
@@ -81,14 +81,14 @@
             font-size: 18px;
             line-height: 1.8;
             min-height: 120px;
-            margin: 25px 0;
+            margin: 18px 0;
             font-weight: 300;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .signature {
-            margin-top: 30px;
+            margin-top: 18px;
             font-size: 15px;
             text-align: right;
             color: #e0e0e0;
@@ -98,32 +98,63 @@
             background: #ffd700;
             color: #1e3c72;
             border: none;
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-size: 16px;
+            padding: 10px 22px;
+            border-radius: 28px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: transform 0.15s, box-shadow 0.15s;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
         }
         .btn:active {
-            transform: scale(0.95);
-            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.18);
+        }
+
+        /* 封面图片样式 */
+        .cover-photo {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .center-small {
+            display: flex;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
 
+<!-- 封面：第一页（显示你和父亲的照片） -->
+<div class="card" id="cover">
+    <h2>给爸爸的一封小卡片</h2>
+    <!-- 把下面的 src 改为你上传到仓库的照片名（示例用 121.jpg） -->
+    <img src="2442.jpg" alt="我和父亲的照片" class="cover-photo">
+    <div style="color:#e6e6e6;margin-bottom:12px;">老爸，点“下一步”来领取你的祝福吧~</div>
+    <div class="center-small">
+        <button class="btn" onclick="showLockScreen()">下一步：解锁祝福</button>
+    </div>
+</div>
+
+<!-- 支付墙：第二页（扫码支付） -->
 <div class="card" id="lock-screen">
     <h2>💰 解锁专属祝福</h2>
     <div class="pay-desc">周总，请先扫码支付“查看费”，<br>再开启您的父亲节惊喜！</div>
-    
-    <img src="121.jpg" alt="微信收款码" class="qr-code">
-    
+
+    <!-- 把下面的 src 改为你仓库里的二维码图片名，比如 二维码.jpg 或 微信图片_2026...jpg -->
+    <img src="二维码.jpg" alt="微信收款码" class="qr-code">
+
     <button class="btn" onclick="unlockCard()">我已支付，立即查看</button>
+    <div style="margin-top:8px;color:#dcdcdc;font-size:13px;">或者返回封面：<button class="btn" style="padding:6px 12px;margin-left:8px;" onclick="showCover()">返回封面</button></div>
 </div>
 
+<!-- 主内容：第三页（祝福语） -->
 <div class="card" id="main-content">
     <div class="greeting-to">To 周总：</div>
     <h1>👨‍👧‍👦 父亲节快乐~</h1>
@@ -141,35 +172,41 @@
         "感谢您让我时常体会到“浓浓的父爱“，满足我能力范围内的所有需求",
         "感谢您对这个家的包容和付出",
         "祝您身体健康，每天都开开心心，少抽烟少喝酒哦！",
-         "没啦",
-         "再翻就重复啦",
     ];
 
     let currentIndex = 0;
     const messageEl = document.getElementById("message-board");
 
-    // 切换下一条祝福逻辑
     function nextMessage() {
         messageEl.style.opacity = 0;
-        messageEl.style.transform = "scale(0.95)";
-        
+        messageEl.style.transform = "scale(0.98)";
         setTimeout(() => {
             messageEl.innerText = blessings[currentIndex];
+            messageEl.style.transition = "all 0.45s ease";
             messageEl.style.opacity = 1;
             messageEl.style.transform = "scale(1)";
-            messageEl.style.transition = "all 0.5s ease";
-            
             currentIndex = (currentIndex + 1) % blessings.length;
-        }, 300);
+        }, 220);
     }
 
-    // 解锁卡片逻辑
-    function unlockCard() {
-        // 隐藏支付墙
+    // 显示支付页（从封面跳转）
+    function showLockScreen() {
+        document.getElementById('cover').style.display = 'none';
+        document.getElementById('lock-screen').style.display = 'block';
+    }
+
+    // 返回封面
+    function showCover() {
         document.getElementById('lock-screen').style.display = 'none';
-        // 显示主卡片
+        document.getElementById('main-content').style.display = 'none';
+        document.getElementById('cover').style.display = 'block';
+    }
+
+    // 支付完成，解锁并显示祝福页
+    function unlockCard() {
+        document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
-        // 触发第一条祝福加载
+        // 触发第一条祝福
         nextMessage();
     }
 </script>
